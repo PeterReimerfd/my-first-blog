@@ -1,0 +1,231 @@
+<html>
+    <head>
+        <style>
+            th, td {
+                border-style: double;
+                padding: 5px;
+            }
+            .hidden,
+            .hidden input,
+            .hidden select {
+                display: none
+            }
+        </style>
+    </head>
+    <body>
+        <div id="filters">
+            <form>
+                <select name="field" id="field-input">
+                    <option></option>
+                    {% for value, field in filter_fields.items %}
+                        <option 
+                            data-type="{{ field.type }}"
+                            value="{{ value }}" 
+                            {% if value == current_filters.field %}selected{% endif %}
+                        >
+                            {{ field.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <div id="column-values" {% if current_filters.op is not None %}class="hidden" {% endif %}>
+                    <select name="value" id="column-input">
+                        {% if filter_columns is not None %}
+                            {% for value in filter_columns %}
+                                <option 
+                                    value="{{ value }}" 
+                                    {% if value == current_filters.value %}selected{% endif %}
+                                >
+                                    {{ value }}
+                                </option>
+                            {% endfor %}
+                        {% endif %}
+                    </select>
+                </div>
+
+                <div id="numeric-values" {% if current_filters.op is None %}class="hidden" {% endif %}>
+                    <select name="op">
+                        <option value="gt">Greater Than</option>
+                        <option value="lt">Less Than</option>
+                        <option value="eq">Equal To</option>
+                    </select>
+                    <input name="value" type="number" value="{{ current_filters.value }}" />
+                </div>
+                <input type="submit">
+            </form>
+        </div>
+
+        <div id="data">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID Number</th>
+                        <th>File Name</th>
+                        <th>Office Location</th>
+                        <th>Last Name</th>
+                        <th>First and Middle Names</th>
+                        <th>Case Number</th>
+                        <th>Judge</th>
+                        <th>PSR Writer</th>
+                        <th>Prosecutor</th>
+                        <th>Attorney</th>
+                        <th>Closing Author</th>
+                        <th>Statute</th>
+                        <th>Plea Type</th>
+                        <th>Unfilled 924c?</th>
+                        <th>Lowest Guidelines-suggested Sentence (in months)</th>
+                        <th>Highest Guidelines-suggested Sentence (in months)</th>
+                        <th>Mandatory Minimum (in months)</th>
+                        <th>Sentence Imposed</th>
+                        <th>Supervised Release</th>
+                        <th>Probation</th>
+                        <th>Cooperation Reduction Percentage</th>
+                        <th>Court Rejected Initial Binding Plea</th>
+                        <th>Pre-trial Release</th>
+                        <th>Appeal Waiver</th>
+                        <th>Restitution</th>
+                        <th>Plan to Appeal</th>
+                        <th>Motions Filed</th>
+                        <th>Motions Won</th>
+                        <th>PSR Objections Filed</th>
+                        <th>PSR Objections Won</th>
+                        <th>Sentencing Memo Filed</th>
+                        <th>Cooperation</th>
+                        <th>Charge Bargain Affecting Sentencing</th>
+                        <th>Variance Applied</th>
+                        <th>Criminal History Category</th>
+                        <th>CC To State</th>
+                        <th>CC To Federal</th>
+                        <th>Mandatory Minimum Imposed?</th>
+                        <th>Adjusted Offense Level</th>
+                        <th>851</th>
+                        <th>924c</th>
+                        <th>4b1.1</th>
+                        <th>Expert Employed?</th>
+                        <th>Investigator Interviewed Witness?</th>
+                        <th>Court Followed Recommendation of Nonbinding Plea Agreement?</th>
+                        <th>Client Visits</th>
+                        <th>Closing Date</th>
+                        <th>Special</th>
+                        <th>Case Length (in months)</th>
+                        <th>Form Version</th>
+                        <th>MF</th>
+                    </tr>
+                </thead>
+                {% for row in data %}
+                    <tr>
+                        <td>{{ row.num }}</td>
+                        <td>{{ row.filename }}</td>
+                        <td>{{ row.location }}</td>
+                        <td>{{ row.lastname }}</td>
+                        <td>{{ row.firstmiddle }}</td>
+                        <td>{{ row.casenumber }}</td>
+                        <td>{{ row.judge }}</td>
+                        <td>{{ row.psrwriter }}</td>
+                        <td>{{ row.prosecuter }}</td>
+                        <td>{{ row.attorney }}</td>
+                        <td>{{ row.closingauthor }}</td>
+                        <td>{{ row.statue }}</td>
+                        <td>{{ row.pleatype }}</td>
+                        <td>{{ row.unfilled924c }}</td>
+                        <td>{{ row.rangelow }}</td>
+                        <td>{{ row.rangehigh }}</td>
+                        <td>{{ row.mandatoryminimummonths }}</td>
+                        <td>{{ row.sentenceimposed }}</td>
+                        <td>{{ row.supervisedrelease }}</td>
+                        <td>{{ row.probation }}</td>
+                        <td>{{ row.cooperationreductionpercentage }}</td>
+                        <td>{{ row.courtrejectedinitialbindingplea }}</td>
+                        <td>{{ row.pretrialrelease }}</td>
+                        <td>{{ row.appealwaiver }}</td>
+                        <td>{{ row.restitution }}</td>
+                        <td>{{ row.plantoappeal }}</td>
+                        <td>{{ row.motionsfiled }}</td>
+                        <td>{{ row.motionswon }}</td>
+                        <td>{{ row.psrobjectionsfiled }}</td>
+                        <td>{{ row.psrobjectionswon }}</td>
+                        <td>{{ row.sentencingmemofiled }}</td>
+                        <td>{{ row.cooperation }}</td>
+                        <td>{{ row.chargebargainaffectingsentencing }}</td>
+                        <td>{{ row.variance }}</td>
+                        <td>{{ row.criminalhistorycategory }}</td>
+                        <td>{{ row.cctostate }}</td>
+                        <td>{{ row.cctofederal }}</td>
+                        <td>{{ row.mandatoryminimumimposed }}</td>
+                        <td>{{ row.adjustedoffenselevel }}</td>
+                        <td>{{ row.eightfiveone }}</td>
+                        <td>{{ row.ninetwofoure }}</td>
+                        <td>{{ row.fourbonepointone }}</td>
+                        <td>{{ row.expertemployed }}</td>
+                        <td>{{ row.investigatorinterviewedwitness }}</td>
+                        <td>{{ row.courtfollowedrecommendationofnonbindingpleaagreement }}</td>
+                        <td>{{ row.clientvisits }}</td>
+                        <td>{{ row.closingdate }}</td>
+                        <td>{{ row.special }}</td>
+                        <td>{{ row.caselength }}</td>
+                        <td>{{ row.formversion }}</td>
+                        <td>{{ row.mf }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <script>
+            // This should really be moved into it's own file
+
+            // Set up the initial inputs
+            const fieldInput = document.getElementById("field-input");
+            const columnInput = document.getElementById("column-input");
+            const columnValues = document.getElementById("column-values");
+            const numericValues = document.getElementById("numeric-values");
+
+            // Listen for the first field changing
+            fieldInput.addEventListener("change", (event) => {
+                // Reset the column input
+                columnInput.innerHTML = "";
+
+                // Make sure a value was selected
+                if (fieldInput.value) {
+                    const optionInput = fieldInput.querySelector(`option[value="${fieldInput.value}"]`);
+                    const type = optionInput.getAttribute("data-type");
+
+                    if (type === "text") {
+                        disable(numericValues);
+                        enable(columnValues);
+                        // Construct the URL to get the columns from
+                        const url = new URL(window.location.origin + "/getColumns");
+
+                        // Add the field being searched
+                        url.searchParams.set("field", fieldInput.value);
+                        
+                        // Perform the fetch request
+                        fetch(url.toString())
+                            // Convert it from JSON
+                            .then(r => r.json())
+                            .then(columns => {
+                                // Iterate over the retrieved columns and construct an <option> for each of them
+                                columns.forEach((column) => {
+                                    const option = document.createElement("option");
+                                    option.innerText = column;
+                                    option.setAttribute("value", column);
+
+                                    // Add it to the <select>
+                                    columnInput.appendChild(option);
+                                });
+                        });
+                    } else {
+                        enable(numericValues);
+                        disable(columnValues);
+                    }
+                }
+            });
+
+            function disable(el) {
+                el.classList.add('hidden');
+                el.querySelectorAll('select, input').forEach((input) => { input.setAttribute("disabled", "true")});
+            }
+            function enable(el) {
+                el.classList.remove('hidden');
+                el.querySelectorAll('select, input').forEach((input) => { input.removeAttribute("disabled")});
+            }
+        </script>
+    </body>
+</html>

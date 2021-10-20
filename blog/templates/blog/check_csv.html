@@ -1,0 +1,117 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+
+
+<table>
+    <tr>
+        <th> num </th>
+        <th>filename</th>
+        <th>location</th>
+        <th>lastname</th>
+        <th>firstmiddle</th>
+        <th>casenumber</th>
+        <th>judge</th>
+        <th>psrwriter</th>
+        <th>prosecuter</th>
+        <th>attorney</th>
+        <th>closingauthor</th>
+        <th>statue</th>
+        <th>pleatype</th>
+        <th>unfilled924c</th>
+        <th>rangelow</th>
+        <th>rangehigh</th>
+        <th>mandatoryminimummonths</th>
+        <th>sentenceimposed</th>
+        <th>supervisedrelease</th>
+        <th>probation</th>
+        <th>cooperationreductionpercentage</th>
+        <th>courtrejectedinitialbindingplea</th>
+        <th>pretrialrelease</th>
+        <th>appealwaiver</th>
+        <th>restitution</th>
+        <th>plantoappeal</th>
+        <th>motionsfiled</th>
+        <th>motionswon</th>
+        <th>psrobjectionsfiled</th>
+        <th>psrobjectionswon</th>
+        <th>sentencingmemofiled</th>
+        <th>cooperation</th>
+        <th>chargebargainaffectingsentencing</th>
+        <th>variance</th>
+        <th>criminalhistorycategory</th>
+        <th>cctostate</th>
+        <th>cctofederal</th>
+        <th>mandatoryminimumimposed</th>
+        <th>adjustedoffenselevel</th>
+        <th>eightfiveone</th>
+        <th>ninetwofoure</th>
+        <th>fourbonepointone</th>
+        <th>expertemployed</th>
+        <th>investigatorinterviewedwitness</th>
+        <th>courtfollowedrecommendationofnonbindingpleaagreement</th>
+        <th>clientvisits</th>
+        <th>closingdate</th>
+        <th>special</th>
+        <th>caselength</th>
+        <th>formversion</th>
+        <th>mf</th>
+            
+    </tr>
+{% for column in tuble %}
+    <tr>
+        <td>{{column.num}}</td>
+        <td>{{column.filename}}</td>
+        <td>{{column.location}}</td>
+        <td>{{column.lastname}}</td>
+        <td>{{column.firstmiddle}}</td>
+        <td>{{column.casenumber}}</td>
+        <td>{{column.judge}}</td>
+        <td>{{column.psrwriter}}</td>
+        <td>{{column.prosecuter}}</td>
+        <td>{{column.attorney}}</td>
+        <td>{{column.closingauthor}}</td>
+        <td>{{column.statue}}</td>
+        <td>{{column.pleatype}}</td>
+        <td>{{column.unfilled924c}}</td>
+        <td>{{column.rangelow}}</td>
+        <td>{{column.rangehigh}}</td>
+        <td>{{column.mandatoryminimummonths}}</td>
+        <td>{{column.sentenceimposed}}</td>
+        <td>{{column.supervisedrelease}}</td>
+        <td>{{column.probation}}</td>
+        <td>{{column.cooperationreductionpercentage}}</td>
+        <td>{{column.courtrejectedinitialbindingplea}}</td>
+        <td>{{column.pretrialrelease}}</td>
+        <td>{{column.appealwaiver}}</td>
+        <td>{{column.restitution}}</td>
+        <td>{{column.plantoappeal}}</td>
+        <td>{{column.motionsfiled}}</td>
+        <td>{{column.motionswon}}</td>
+        <td>{{column.psrobjectionsfiled}}</td>
+        <td>{{column.psrobjectionswon}}</td>
+        <td>{{column.sentencingmemofiled}}</td>
+        <td>{{column.cooperation}}</td>
+        <td>{{column.chargebargainaffectingsentencing}}</td>
+        <td>{{column.variance}}</td>
+        <td>{{column.criminalhistorycategory}}</td>
+        <td>{{column.cctostate}}</td>
+        <td>{{column.cctofederal}}</td>
+        <td>{{column.mandatoryminimumimposed}}</td>
+        <td>{{column.adjustedoffenselevel}}</td>
+        <td>{{column.eightfiveone}}</td>
+        <td>{{column.ninetwofoure}}</td>
+        <td>{{column.fourbonepointone}}</td>
+        <td>{{column.expertemployed}}</td>
+        <td>{{column.investigatorinterviewedwitness}}</td>
+        <td>{{column.courtfollowedrecommendationofnonbindingpleaagreement}}</td>
+        <td>{{column.clientvisits}}</td>
+        <td>{{column.closingdate}}</td>
+        <td>{{column.special}}</td>
+        <td>{{column.caselength}}</td>
+        <td>{{column.formversion}}</td>
+        <td>{{column.mf}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}
