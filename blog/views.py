@@ -2,7 +2,7 @@ from functools import singledispatch
 from django.http.response import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render, HttpResponse, get_object_or_404, redirect
 from .models import DFrame
-from django.db.models import Avg, Sum, Max, Min, Case, When, StdDev, F, Count
+from django.db.models import Avg, Sum, Max, Min, Case, When, StdDev, F, Count, Case, Q
 from django.utils import timezone
 from django.contrib import messages
 from .utils import get_field_columns
@@ -90,6 +90,7 @@ def check_csv(request):
     return render(request, 'blog/check_csv.html',{'tuble': tuble})
 
 def test_filter(request):
+    DFrame.objects.filter(prosecuter="McCracken. Sheri").update(prosecuter="Catania. Sheri")
     #gonna need some gets here
     #at any rate
     noto=request.GET.get("noto")
@@ -141,17 +142,23 @@ def test_filter(request):
     gregor=request.GET.get("gregor")
     startdt=request.GET.get("startdt")
     enddt=request.GET.get("enddy")
+    chcat=request.GET.get("chcat")
+    coureject=request.GET.get("coureject")
     altcoin=0
     title=o
+    sargh="x"
     if o == "sentenceimprovement":
         o = "rangelow"
         altcoin = "sentenceimposed"
         title = "Sentence Improvement"
+        sargh = "sentenceimprovement"
     ntitle = "Counter-"
     otitle = "Total "
     if title is not None:
+        title = title + " (in months)"
         ntitle = "Counter-" + title
         otitle = "Total " + title
+        
     
     #Below, filter management FOR DROPDOWN FILTERS
     tuble = DFrame.objects.all()
@@ -166,7 +173,10 @@ def test_filter(request):
     if ptype != "SPACE":
         tuble = tuble.filter(pleatype=ptype)
     if u924c != "SPACE":
-        tuble = tuble.filter(unfiled924c=u924c)
+        if u924c == "NO":
+            tuble = tuble.filter(unfiled924c=u924c) | tuble.filter(unfiled924c="UNKNOWN")
+        else:
+            tuble = tuble.filter(unfiled924c=u924c)
     if ptr != "SPACE":
         if ptr != "detain":
             if ptr != "release":
@@ -176,33 +186,72 @@ def test_filter(request):
     if ptr == "detain":
         tuble = tuble.filter(pretrialrelease__startswith="Detained")
     if aw != "SPACE":
-        tuble = tuble.filter(appealwaiver=aw)
+        if aw == "YES":
+            tuble = tuble.filter(appealwaiver=aw)
+        else:
+            tuble = tuble.filter(appealwaiver=aw) | tuble.filter(appealwaiver="N/A")
     if res != "SPACE":
-        tuble = tuble.filter(appealwaiver=res)
+        if res == "YES":
+            tuble = tuble.filter(restitution=res)
+        else:
+            tuble = tuble.filter(restitution=res) | tuble.filter(restitution="") | tuble.filter(restitution="UNKNOWN")
     if plap != "SPACE":
-        tuble = tuble.filter(appealwaiver=plap)
+        tuble = tuble.filter(plantoappeal=plap)
     if mofi != "SPACE":
-        tuble = tuble.filter(motionsfiled=mofi)
+        if mofi == "No":
+            tuble = tuble.filter(motionsfiled=mofi) | tuble.filter(motionsfiled="UNKNOWN")
+        else:
+            tuble = tuble.filter(motionsfiled=mofi)
     if mowo != "SPACE":
-       tuble = tuble.filter(motionswon=mowo)
+        if mowo == "No":
+            tuble = tuble.filter(motionswon=mowo) | tuble.filter(motionswon="UNKNOWN")
+        else:
+            tuble = tuble.filter(motionswon=mowo)
     if psrof != "SPACE":
-        tuble = tuble.filter(psrobjectionsfiled=psrof)
+        if psrof == "NO":
+            tuble = tuble.filter(psrobjectionsfiled=psrof) | tuble.filter(psrobjectionsfiled="UNKNOWN")
+        else:
+            tuble = tuble.filter(psrobjectionsfiled=psrof)
     if psrow != "SPACE":
-        tuble = tuble.filter(psrobjectionswon=psrow)
+        if psrow == "NO":
+            tuble = tuble.filter(psrobjectionswon=psrow) | tuble.filter(psrobjectionswon="UNKNOWN")
+        else:
+            tuble = tuble.filter(psrobjectionswon=psrow)
     if smf != "SPACE":
-        tuble = tuble.filter(sentencingmemofiled=smf)
+        if smf == "NO":
+            tuble = tuble.filter(sentencingmemofiled=smf) | tuble.filter(sentencingmemofiled="UNKNOWN")
+        else:
+            tuble = tuble.filter(sentencingmemofiled=smf)
     if coop != "SPACE":
-        tuble = tuble.filter(cooperation=coop)
+        if coop == "NO":
+            tuble = tuble.filter(cooperation=coop) | tuble.filter(cooperation="UNKNOWN")
+        else:
+            tuble = tuble.filter(cooperation=coop)
     if cbas != "SPACE":
-        tuble = tuble.filter(chargebargainaffectingsentencing=cbas)
+        if cbas == "NO":
+            tuble = tuble.filter(chargebargainaffectingsentencing=cbas) | tuble.filter(chargebargainaffectingsentencing="UNKNOWN") | tuble.filter(chargebargainaffectingsentencing="N/A")
+        else:
+            tuble = tuble.filter(chargebargainaffectingsentencing=cbas)
     if vaap != "SPACE":
-        tuble = tuble.filter(variance=vaap)
+        if vaap == "NO":
+            tuble = tuble.filter(variance=vaap) | tuble.filter(variance="UNKNOWN") | tuble.filter(variance="N/A")
+        else:
+            tuble = tuble.filter(variance=vaap)
     if ccst != "SPACE":
-        tuble = tuble.filter(cctostate=ccst)
+        if ccst == "NO":
+            tuble = tuble.filter(cctostate=ccst) | tuble.filter(cctostate="UNKNOWN") | tuble.filter(cctostate="N/A")
+        else:
+            tuble = tuble.filter(cctostate=ccst)
     if ccfe != "SPACE":
-        tuble = tuble.filter(cctofederal=ccfe)
+        if ccfe == "NO":
+            tuble = tuble.filter(cctofederal=ccfe) | tuble.filter(cctofederal="UNKNOWN") | tuble.filter(cctofederal="N/A")
+        else:
+            tuble = tuble.filter(cctofederal=ccfe)
     if manmin != "SPACE":
-        tuble = tuble.filter(mandatoryminimumimposed=manmin)
+        if manmin == "NO":
+            tuble = tuble.filter(mandatoryminimumimposed=manmin) | tuble.filter(mandatoryminimumimposed="UNKNOWN")
+        else:
+            tuble = tuble.filter(mandatoryminimumimposed=manmin)
     if efo != "SPACE":
         tuble = tuble.filter(eightfiveone=efo)
     if ntfc != "SPACE":
@@ -210,11 +259,21 @@ def test_filter(request):
     if fboo != "SPACE":
         tuble = tuble.filter(fourbonepointone=fboo)
     if exem != "SPACE":
-        tuble = tuble.filter(expertemployed=exem)
+        if exem == "NO":
+            tuble = tuble.filter(expertemployed=exem) | tuble.filter(expertemployed="UNKNOWN")
+        else:
+            tuble = tuble.filter(expertemployed=exem)
     if iiw != "SPACE":
-        tuble = tuble.filter(investigatorinterviewedwitness=iiw)
+        if iiw == "NO":
+            tuble = tuble.filter(investigatorinterviewedwitness=iiw) | tuble.filter(investigatorinterviewedwitness="UNKNOWN")
+        else:
+            tuble = tuble.filter(investigatorinterviewedwitness=iiw)
     if cfrec != "SPACE":
         tuble = tuble.filter(courtfollowedrecommendationofnonbindingpleaagreement=cfrec)
+    if chcat != "SPACE":
+        tuble = tuble.filter(criminalhistorycategory=chcat)
+    if coureject != "SPACE":
+        tuble = tuble.filter(courtrejectedinitialbindingplea=coureject)
     #Below, filter management for TYPED filters
     if psrw is not None:
         tuble = tuble.filter(psrwriter__startswith=psrw)
@@ -287,72 +346,81 @@ def test_filter(request):
     segnub=nuble
     overall=DFrame.objects.all()
     #Below, segmenting management
+    segtct = DFrame.objects.all()
+    segnct = DFrame.objects.all()
+    overct = DFrame.objects.all()
     si=F('rangelow') - F('sentenceimposed')
+    simpleave=tuble
+    simpall = DFrame.objects.all()
     if gregor == "average":
         simpleave = tuble.aggregate(tAgg=(Avg(o)-Avg(altcoin)))
+        simpall = overall.aggregate(tAgg=(Avg(o)-Avg(altcoin)))
     if gregor == "total":
         simpleave = tuble.aggregate(tAgg=(Sum(o)-Sum(altcoin)))
+        simpall = overall.aggregate(tAgg=(Sum(o)-Sum(altcoin)))
     if gregor == "maximum":
-        if o == "sentenceimprovement":
+        if sargh == "sentenceimprovement":
             simpleave = tuble.aggregate(tAgg=(Max((si))))
+            simpall = overall.aggregate(tAgg=(Max((si))))
         else:
             simpleave = tuble.aggregate(tAgg=(Max((o))))
+            simpall = overall.aggregate(tAgg=(Max((o))))
     if gregor == "minimum":
-        if o == "sentenceimprovement":
+        if sargh == "sentenceimprovement":
             simpleave = tuble.aggregate(tAgg=(Min(si)))
+            simpall = overall.aggregate(tAgg=(Min(si)))
         else:
             simpleave = tuble.aggregate(tAgg=(Min(o)))
+            simpall = overall.aggregate(tAgg=(Min(o)))
     if gregor == "standev":
-        if o == "sentenceimprovement":
+        if sargh == "sentenceimprovement":
             simpleave = tuble.aggregate(tAgg=(StdDev(si)))
+            simpall = overall.aggregate(tAgg=(StdDev(si)))
         else:
             simpleave = tuble.aggregate(tAgg=(StdDev(o)))
-    if gregor == "count":
-        valval = tuble.count()
-        simpleave = {1: valval}
+            simpall = overall.aggregate(tAgg=(StdDev(o)))
+    simpleavect = tuble.count()
+    simpallct = overall.count()
     if s != "SPACE":
         if s != None:
-                if gregor == "average":
-                    segtub = tuble.values(s).annotate(tAgg=(Avg(o)-Avg(altcoin)))
-                    segnub = nuble.values(s).annotate(nAgg=(Avg(o)-Avg(altcoin)))
-                    overall = overall.values(s).annotate(oAgg=(Avg(o)-Avg(altcoin)))
-                if gregor == "total":
-                    segtub = tuble.values(s).annotate(tAgg=(Sum(o)-Sum(altcoin)))
-                    segnub = nuble.values(s).annotate(nAgg=(Sum(o)-Sum(altcoin)))
-                    overall = overall.values(s).annotate(oAgg=(Sum(o)-Sum(altcoin)))
-                if gregor == "maximum":
-                    if o == "sentenceimprovement":
-                        segtub = tuble.values(s).annotate(tAgg=(Max((si))))
-                        segnub = nuble.values(s).annotate(nAgg=(Max((si))))
-                        overall = overall.values(s).annotate(oAgg=(Max((si))))
-                    else:
-                        segtub = tuble.values(s).annotate(tAgg=(Max((o))))
-                        segnub = nuble.values(s).annotate(nAgg=(Max((o))))
-                        overall = overall.values(s).annotate(oAgg=(Max((o))))
-                if gregor == "minimum":
-                    if o == "sentenceimprovement":
-                        segtub = tuble.values(s).annotate(tAgg=(Min(si)))
-                        segnub = nuble.values(s).annotate(nAgg=(Min(si)))
-                        overall = overall.values(s).annotate(oAgg=(Min(si)))
-                    else:
-                        segtub = tuble.values(s).annotate(tAgg=(Min(o)))
-                        segnub = nuble.values(s).annotate(nAgg=(Min(o)))
-                        overall = overall.values(s).annotate(oAgg=(Min(o)))
-                if gregor == "standev":
-                    if o == "sentenceimprovement":
-                        segtub = tuble.values(s).annotate(tAgg=(StdDev(si)))
-                        segnub = nuble.values(s).annotate(nAgg=(StdDev(si)))
-                        overall = overall.values(s).annotate(oAgg=(StdDev(si)))
-                    else:
-                        segtub = tuble.values(s).annotate(tAgg=(StdDev(o)))
-                        segnub = nuble.values(s).annotate(nAgg=(StdDev(o)))
-                        overall = overall.values(s).annotate(oAgg=(StdDev(o)))
-                if gregor == "count":
-                    if o == "sentenceimprovement":
-                        segtub = tuble.values(s).annotate(tAgg=Count(si)) #does it matter that there's no "agg" here to show up in the table?
-                        segnub = nuble.values(s).annotate(nAgg=Count(si)) #yeah okay this function isn't working at all rn
-                        overall = overall.values(s).annotate(oAgg=Count(si))
-    return render(request, 'blog/test_filter.html',{'gregor': gregor,'simpleave': simpleave, 'otitle': otitle, 'ntitle': ntitle, 'overall': overall, 'segnub': segnub,'tuble': tuble,'segtub': segtub, 'title': title, 's': s})
+            if gregor == "average":
+                segtub = tuble.values(s).annotate(tAgg=(Avg(o)-Avg(altcoin))).annotate(tarct=Count(o))
+                segnub = nuble.values(s).annotate(nAgg=(Avg(o)-Avg(altcoin))).annotate(tarct=Count(o))
+                overall = overall.values(s).annotate(oAgg=(Avg(o)-Avg(altcoin))).annotate(tarct=Count(o))
+            if gregor == "total":
+                segtub = tuble.values(s).annotate(tAgg=(Sum(o)-Sum(altcoin))).annotate(tarct=Count(o))
+                segnub = nuble.values(s).annotate(nAgg=(Sum(o)-Sum(altcoin))).annotate(tarct=Count(o))
+                overall = overall.values(s).annotate(oAgg=(Sum(o)-Sum(altcoin))).annotate(tarct=Count(o))
+            if gregor == "maximum":
+                if sargh == "sentenceimprovement":
+                    segtub = tuble.values(s).annotate(tAgg=(Max((si)))).annotate(tarct=Count(o))
+                    segnub = nuble.values(s).annotate(nAgg=(Max((si)))).annotate(tarct=Count(o))
+                    overall = overall.values(s).annotate(oAgg=(Max((si)))).annotate(tarct=Count(o))
+                else:
+                    segtub = tuble.values(s).annotate(tAgg=(Max((o)))).annotate(tarct=Count(o))
+                    segnub = nuble.values(s).annotate(nAgg=(Max((o)))).annotate(tarct=Count(o))
+                    overall = overall.values(s).annotate(oAgg=(Max((o)))).annotate(tarct=Count(o))
+            if gregor == "minimum":
+                if sargh == "sentenceimprovement":
+                    segtub = tuble.values(s).annotate(tAgg=(Min(si))).annotate(tarct=Count(o))
+                    segnub = nuble.values(s).annotate(nAgg=(Min(si))).annotate(tarct=Count(o))
+                    overall = overall.values(s).annotate(oAgg=(Min(si))).annotate(tarct=Count(o))
+                else:
+                    segtub = tuble.values(s).annotate(tAgg=(Min(o))).annotate(tarct=Count(o))
+                    segnub = nuble.values(s).annotate(nAgg=(Min(o))).annotate(tarct=Count(o))
+                    overall = overall.values(s).annotate(oAgg=(Min(o))).annotate(tarct=Count(o))
+            if gregor == "standev":
+                if sargh == "sentenceimprovement":
+                    segtub = tuble.values(s).annotate(tAgg=(StdDev(si))).annotate(tarct=Count(o))
+                    segnub = nuble.values(s).annotate(nAgg=(StdDev(si))).annotate(tarct=Count(o))
+                    overall = overall.values(s).annotate(oAgg=(StdDev(si))).annotate(tarct=Count(o))
+                else:
+                    segtub = tuble.values(s).annotate(tAgg=(StdDev(o))).annotate(tarct=Count(o))
+                    segnub = nuble.values(s).annotate(nAgg=(StdDev(o))).annotate(tarct=Count(o))
+                    overall = overall.values(s).annotate(oAgg=(StdDev(o))).annotate(tarct=Count(o))
+    else:
+        s = None
+    return render(request, 'blog/test_filter.html',{'segtct': segtct, 'segnct': segnct, 'overct': overct, 'gregor': gregor,'simpallct': simpallct, 'simpleavect': simpleavect, 'simpall': simpall, 'simpleave': simpleave, 'otitle': otitle, 'ntitle': ntitle, 'overall': overall, 'segnub': segnub,'tuble': tuble,'segtub': segtub, 'title': title, 's': s})
 
 
 # one parameter named request
