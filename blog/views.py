@@ -2,10 +2,11 @@ from functools import singledispatch
 from django.http.response import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render, HttpResponse, get_object_or_404, redirect
 from .models import DFrame
-from django.db.models import Avg, Sum, Max, Min, Case, When, StdDev, F, Count, Case, Q
+from django.db.models import Avg, Sum, Max, Min, Case, When, StdDev, F, Count, Case, Q, query
 from django.utils import timezone
 from django.contrib import messages
 from .utils import get_field_columns
+from django.db import connection, reset_queries
 #from .forms import PostForm
 import json
 import csv, io
@@ -144,6 +145,8 @@ def test_filter(request):
     enddt=request.GET.get("enddy")
     chcat=request.GET.get("chcat")
     coureject=request.GET.get("coureject")
+    aolevel=request.GET.get("aolevel")
+    gle35=request.GET.get("gle35")
     altcoin=0
     title=o
     sargh="x"
@@ -152,13 +155,23 @@ def test_filter(request):
         altcoin = "sentenceimposed"
         title = "Sentence Improvement"
         sargh = "sentenceimprovement"
+    if o == "sip":
+        o = "rangelow"
+        altcoin = "sentenceimposed"
+        title = "Sentence Improvement"
+        sargh = "sip"
+
     ntitle = "Counter-"
     otitle = "Total "
     if title is not None:
-        title = title + " (in months)"
-        ntitle = "Counter-" + title
-        otitle = "Total " + title
-        
+        if sargh == "sip":
+            title = "Sentence Improvement (percentage)"
+            ntitle = "Counter-" + title
+            otitle = "Total " + title
+        else:
+            title = title + " (in months)"
+            ntitle = "Counter-" + title
+            otitle = "Total " + title
     
     #Below, filter management FOR DROPDOWN FILTERS
     tuble = DFrame.objects.all()
@@ -303,6 +316,13 @@ def test_filter(request):
             tuble = tuble.filter(rangelow__gte=marmot)
         if gle3 == "exact":
             tuble = tuble.filter(rangelow = marmot)
+    if aolevel is not None:
+        if gle35 == "less":
+            tuble = tuble.filter(rangelow__lte=aolevel)
+        if gle35 == "more":
+            tuble = tuble.filter(rangelow__gte=aolevel)
+        if gle35 == "exact":
+            tuble = tuble.filter(rangelow = aolevel)
     if senim is not None:
         if gle4 == "less":
             tuble = tuble.filter(rangelow__lte=senim)
@@ -337,6 +357,7 @@ def test_filter(request):
     if enddt is not None:
         if enddt != "":
             tuble=tuble.filter(closingdate__lte=enddt)
+
     #Negated table creation
     nuble=nuble.exclude(num__in=tuble.values_list('num',flat=True))
     if noto == "on":
@@ -345,75 +366,139 @@ def test_filter(request):
         nuble=holdem
     segnub=nuble
     overall=DFrame.objects.all()
+
     #Below, segmenting management
     segtct = DFrame.objects.all()
     segnct = DFrame.objects.all()
     overct = DFrame.objects.all()
-    si=F('rangelow') - F('sentenceimposed')
-    simpleave=tuble
+    si=F('rangelow') - F('sentenceimposed') + 0.0
     simpall = DFrame.objects.all()
+    simpleave = DFrame.objects.all()
+    tublet = tuble.filter(rangelow__gt=0)
+    overallet = overall.filter(rangelow__gt=0)
+    nublet = nuble.filter(rangelow__gt=0)
     if gregor == "average":
-        simpleave = tuble.aggregate(tAgg=(Avg(o)-Avg(altcoin)))
-        simpall = overall.aggregate(tAgg=(Avg(o)-Avg(altcoin)))
+        if sargh == "sip":
+            simpleave = tublet.aggregate(tAgg=Avg(si/F('rangelow')+0.0))
+            simpall = overallet.aggregate(tAgg=Avg(si/F('rangelow')+0.0))
+        elif sargh == 'sentenceimprovement':
+            simpleave = tublet.aggregate(tAgg=(Avg(o)-Avg(altcoin)))
+            simpall = overallet.aggregate(tAgg=(Avg(o)-Avg(altcoin)))
+        else:
+            simpleave = tuble.aggregate(tAgg=(Avg(o)-Avg(altcoin)))
+            simpall = overall.aggregate(tAgg=(Avg(o)-Avg(altcoin)))
     if gregor == "total":
-        simpleave = tuble.aggregate(tAgg=(Sum(o)-Sum(altcoin)))
-        simpall = overall.aggregate(tAgg=(Sum(o)-Sum(altcoin)))
+        if sargh == "sip":
+            simpleave = tublet.aggregate(tAgg=(Sum(si/(F('rangelow')+0.0))))
+            simpall = overallet.aggregate(tAgg=(Sum(si)/Avg(F('rangelow')+0.0)))
+        elif sargh == "sentenceimprovement":
+            simpleave = tublet.aggregate(tAgg=(Sum(o)-Sum(altcoin)))
+            simpall = overallet.aggregate(tAgg=(Sum(o)-Sum(altcoin)))
+        else:
+            simpleave = tuble.aggregate(tAgg=(Sum(o)-Sum(altcoin)))
+            simpall = overall.aggregate(tAgg=(Sum(o)-Sum(altcoin)))
     if gregor == "maximum":
         if sargh == "sentenceimprovement":
-            simpleave = tuble.aggregate(tAgg=(Max((si))))
-            simpall = overall.aggregate(tAgg=(Max((si))))
+            simpleave = tublet.aggregate(tAgg=(Max((si))))
+            simpall = overallet.aggregate(tAgg=(Max((si))))
+        elif sargh == "sip":
+            simpleave = tublet.aggregate(tAgg=(Max((si/F('rangelow')+0.0))))
+            simpall = overallet.aggregate(tAgg=(Max((si/F('rangelow')+0.0))))
         else:
             simpleave = tuble.aggregate(tAgg=(Max((o))))
             simpall = overall.aggregate(tAgg=(Max((o))))
     if gregor == "minimum":
         if sargh == "sentenceimprovement":
-            simpleave = tuble.aggregate(tAgg=(Min(si)))
-            simpall = overall.aggregate(tAgg=(Min(si)))
+            simpleave = tublet.aggregate(tAgg=(Min(si)))
+            simpall = overallet.aggregate(tAgg=(Min(si)))
+        elif sargh == "sip":
+            simpleave = tublet.aggregate(tAgg=(Min((si/F('rangelow')+0.0))))
+            simpall = overallet.aggregate(tAgg=(Min((si/F('rangelow')+0.0))))
         else:
             simpleave = tuble.aggregate(tAgg=(Min(o)))
             simpall = overall.aggregate(tAgg=(Min(o)))
     if gregor == "standev":
         if sargh == "sentenceimprovement":
-            simpleave = tuble.aggregate(tAgg=(StdDev(si)))
-            simpall = overall.aggregate(tAgg=(StdDev(si)))
+            simpleave = tublet.aggregate(tAgg=(StdDev(si)))
+            simpall = overallet.aggregate(tAgg=(StdDev(si)))
+        elif sargh == "sip":
+            simpleave = tublet.aggregate(tAgg=(StdDev(si/F('rangelow')+0.0)))
+            simpall = overallet.aggregate(tAgg=(StdDev(si/F('rangelow')+0.0)))
         else:
             simpleave = tuble.aggregate(tAgg=(StdDev(o)))
             simpall = overall.aggregate(tAgg=(StdDev(o)))
     simpleavect = tuble.count()
     simpallct = overall.count()
+    if sargh == "sip":
+        simpleavect = tublet.count()
+        simpallct = overallet.count()
+    if sargh == "sentenceimprovement":
+        simpleavect = tublet.count()
+        simpallct = overallet.count()
+        #BELOW SIP STILL NEEDS IMPLEMENTATION, also TUBLET and OVERALLET for SENTENCEIMPROVEMENT
     if s != "SPACE":
         if s != None:
             if gregor == "average":
-                segtub = tuble.values(s).annotate(tAgg=(Avg(o)-Avg(altcoin))).annotate(tarct=Count(o))
-                segnub = nuble.values(s).annotate(nAgg=(Avg(o)-Avg(altcoin))).annotate(tarct=Count(o))
-                overall = overall.values(s).annotate(oAgg=(Avg(o)-Avg(altcoin))).annotate(tarct=Count(o))
+                if sargh == "sip":
+                    segtub = tublet.values(s).annotate(tAgg=Avg(si/F('rangelow')+0.0)).annotate(tarct=Count(o))
+                    segnub = nublet.values(s).annotate(nAgg=Avg(si/F('rangelow')+0.0)).annotate(tarct=Count(o))
+                    overall = overallet.values(s).annotate(oAgg=Avg(si/F('rangelow')+0.0)).annotate(tarct=Count(o))
+                elif sargh == "sentenceimprovement":
+                    segtub = tublet.values(s).annotate(tAgg=(Avg(o)-Avg(altcoin))).annotate(tarct=Count(o))
+                    segnub = nublet.values(s).annotate(nAgg=(Avg(o)-Avg(altcoin))).annotate(tarct=Count(o))
+                    overall = overallet.values(s).annotate(oAgg=(Avg(o)-Avg(altcoin))).annotate(tarct=Count(o))
+                else:
+                    segtub = tuble.values(s).annotate(tAgg=(Avg(o)-Avg(altcoin))).annotate(tarct=Count(o))
+                    segnub = nuble.values(s).annotate(nAgg=(Avg(o)-Avg(altcoin))).annotate(tarct=Count(o))
+                    overall = overall.values(s).annotate(oAgg=(Avg(o)-Avg(altcoin))).annotate(tarct=Count(o))
             if gregor == "total":
-                segtub = tuble.values(s).annotate(tAgg=(Sum(o)-Sum(altcoin))).annotate(tarct=Count(o))
-                segnub = nuble.values(s).annotate(nAgg=(Sum(o)-Sum(altcoin))).annotate(tarct=Count(o))
-                overall = overall.values(s).annotate(oAgg=(Sum(o)-Sum(altcoin))).annotate(tarct=Count(o))
+                if sargh == "sentenceimprovement":
+                    segtub = tublet.values(s).annotate(tAgg=(Sum(o)-Sum(altcoin))).annotate(tarct=Count(o))
+                    segnub = nublet.values(s).annotate(nAgg=(Sum(o)-Sum(altcoin))).annotate(tarct=Count(o))
+                    overall = overallet.values(s).annotate(oAgg=(Sum(o)-Sum(altcoin))).annotate(tarct=Count(o))
+                elif sargh == "sip":
+                    segtub = tublet.values(s).annotate(tAgg=(Sum(si/F('rangelow')+0.0))).annotate(tarct=Count(o))
+                    segnub = nublet.values(s).annotate(nAgg=(Sum(si/F('rangelow')+0.0))).annotate(tarct=Count(o))
+                    overall = overallet.values(s).annotate(oAgg=(Sum(si/F('rangelow')+0.0))).annotate(tarct=Count(o))
+                else:
+                    segtub = tuble.values(s).annotate(tAgg=(Sum(o)-Sum(altcoin))).annotate(tarct=Count(o))
+                    segnub = nuble.values(s).annotate(nAgg=(Sum(o)-Sum(altcoin))).annotate(tarct=Count(o))
+                    overall = overall.values(s).annotate(oAgg=(Sum(o)-Sum(altcoin))).annotate(tarct=Count(o))
             if gregor == "maximum":
                 if sargh == "sentenceimprovement":
-                    segtub = tuble.values(s).annotate(tAgg=(Max((si)))).annotate(tarct=Count(o))
-                    segnub = nuble.values(s).annotate(nAgg=(Max((si)))).annotate(tarct=Count(o))
-                    overall = overall.values(s).annotate(oAgg=(Max((si)))).annotate(tarct=Count(o))
+                    segtub = tublet.values(s).annotate(tAgg=(Max((si)))).annotate(tarct=Count(o))
+                    segnub = nublet.values(s).annotate(nAgg=(Max((si)))).annotate(tarct=Count(o))
+                    overall = overallet.values(s).annotate(oAgg=(Max((si)))).annotate(tarct=Count(o))
+                elif sargh == "sip":
+                    segtub = tublet.values(s).annotate(tAgg=(Max(si/F('rangelow')+0.0))).annotate(tarct=Count(o))
+                    segnub = nublet.values(s).annotate(nAgg=(Max(si/F('rangelow')+0.0))).annotate(tarct=Count(o))
+                    overall = overallet.values(s).annotate(oAgg=(Max(si/F('rangelow')+0.0))).annotate(tarct=Count(o))
                 else:
                     segtub = tuble.values(s).annotate(tAgg=(Max((o)))).annotate(tarct=Count(o))
                     segnub = nuble.values(s).annotate(nAgg=(Max((o)))).annotate(tarct=Count(o))
                     overall = overall.values(s).annotate(oAgg=(Max((o)))).annotate(tarct=Count(o))
             if gregor == "minimum":
                 if sargh == "sentenceimprovement":
-                    segtub = tuble.values(s).annotate(tAgg=(Min(si))).annotate(tarct=Count(o))
-                    segnub = nuble.values(s).annotate(nAgg=(Min(si))).annotate(tarct=Count(o))
-                    overall = overall.values(s).annotate(oAgg=(Min(si))).annotate(tarct=Count(o))
+                    segtub = tublet.values(s).annotate(tAgg=(Min(si))).annotate(tarct=Count(o))
+                    segnub = nublet.values(s).annotate(nAgg=(Min(si))).annotate(tarct=Count(o))
+                    overall = overallet.values(s).annotate(oAgg=(Min(si))).annotate(tarct=Count(o))
+                elif sargh == "sip":
+                    segtub = tublet.values(s).annotate(tAgg=(Min(si/F('rangelow')+0.0))).annotate(tarct=Count(o))
+                    segnub = nublet.values(s).annotate(nAgg=(Min(si/F('rangelow')+0.0))).annotate(tarct=Count(o))
+                    overall = overallet.values(s).annotate(oAgg=(Min(si/F('rangelow')+0.0))).annotate(tarct=Count(o))
                 else:
                     segtub = tuble.values(s).annotate(tAgg=(Min(o))).annotate(tarct=Count(o))
                     segnub = nuble.values(s).annotate(nAgg=(Min(o))).annotate(tarct=Count(o))
                     overall = overall.values(s).annotate(oAgg=(Min(o))).annotate(tarct=Count(o))
             if gregor == "standev":
                 if sargh == "sentenceimprovement":
-                    segtub = tuble.values(s).annotate(tAgg=(StdDev(si))).annotate(tarct=Count(o))
-                    segnub = nuble.values(s).annotate(nAgg=(StdDev(si))).annotate(tarct=Count(o))
-                    overall = overall.values(s).annotate(oAgg=(StdDev(si))).annotate(tarct=Count(o))
+                    segtub = tublet.values(s).annotate(tAgg=(StdDev(si))).annotate(tarct=Count(o))
+                    segnub = nublet.values(s).annotate(nAgg=(StdDev(si))).annotate(tarct=Count(o))
+                    overall = overallet.values(s).annotate(oAgg=(StdDev(si))).annotate(tarct=Count(o))
+                elif sargh == "sip":
+                    segtub = tublet.values(s).annotate(tAgg=(StdDev(si/F('rangelow')+0.0))).annotate(tarct=Count(o))
+                    segnub = nublet.values(s).annotate(nAgg=(StdDev(si/F('rangelow')+0.0))).annotate(tarct=Count(o))
+                    overall = overallet.values(s).annotate(oAgg=(StdDev(si/F('rangelow')+0.0))).annotate(tarct=Count(o))
                 else:
                     segtub = tuble.values(s).annotate(tAgg=(StdDev(o))).annotate(tarct=Count(o))
                     segnub = nuble.values(s).annotate(nAgg=(StdDev(o))).annotate(tarct=Count(o))

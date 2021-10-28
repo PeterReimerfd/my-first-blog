@@ -27,7 +27,8 @@
                         <option value="adjustedoffenselevel">Adjusted Offense Level</option>
                         <option value="clientvisits">Client Visits</option>
                         <option value="caselength">Case Length (in months)</option>
-                        <option value="sentenceimprovement">Sentence Improvement</option>
+                        <option value="sentenceimprovement">Sentence Improvement (in months)</option>
+                        <option value="sip">Sentence Improvement (percentage)</option>
                     </select>
                 </label>
             </div>
@@ -323,6 +324,15 @@
                         <option value="same">Exactly</option>
                     </select>
                     <input type="number" name="marmot">
+                </label>
+                <label> Filter: Adjusted Offense Level (in months)
+                    <select name="gle35">
+                        <option value="SPACE"></options>
+                        <option value="less">At Most</option>
+                        <option value="more">At Least</option>
+                        <option value="same">Exactly</option>
+                    </select>
+                    <input type="number" name="aolevel">
                 </label>
                 <label> Filter: Sentence Imposed
                     <select name="gle4">
