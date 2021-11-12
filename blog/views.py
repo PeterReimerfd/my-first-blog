@@ -160,7 +160,10 @@ def test_filter(request):
         altcoin = "sentenceimposed"
         title = "Sentence Improvement"
         sargh = "sip"
-
+    if s == "prosecuter":
+        stitling = "prosecutor"
+    else:
+        stitling = s
     ntitle = "Counter-"
     otitle = "Total "
     if title is not None:
@@ -505,7 +508,7 @@ def test_filter(request):
                     overall = overall.values(s).annotate(oAgg=(StdDev(o))).annotate(tarct=Count(o))
     else:
         s = None
-    return render(request, 'blog/test_filter.html',{'segtct': segtct, 'segnct': segnct, 'overct': overct, 'gregor': gregor,'simpallct': simpallct, 'simpleavect': simpleavect, 'simpall': simpall, 'simpleave': simpleave, 'otitle': otitle, 'ntitle': ntitle, 'overall': overall, 'segnub': segnub,'tuble': tuble,'segtub': segtub, 'title': title, 's': s})
+    return render(request, 'blog/test_filter.html',{'stitling': stitling, 'segtct': segtct, 'segnct': segnct, 'overct': overct, 'gregor': gregor,'simpallct': simpallct, 'simpleavect': simpleavect, 'simpall': simpall, 'simpleave': simpleave, 'otitle': otitle, 'ntitle': ntitle, 'overall': overall, 'segnub': segnub,'tuble': tuble,'segtub': segtub, 'title': title, 's': s})
 
 
 # one parameter named request

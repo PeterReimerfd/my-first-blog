@@ -5,6 +5,7 @@
     <form class="form-anticlear">
         <div class='row'>
             <div class = "col-md-2">
+                <input type="reset">
                 <label> Exclude selection
                     <input type="checkbox" name="noto">
                 </label>
@@ -60,29 +61,29 @@
                 <label> Filter: Statute
                     <select name="fstat">
                         <option value="SPACE"></option>
+                        <option value="924(c)">924(c)</option>
+                        <option value="Assault">Assault</option>
+                        <option value="Child Pornography">Child Pornography</option>
+                        <option value="Counterfeiting">Counterfeiting</option>
+                        <option value="Criminal Threat">Criminal Threat</option>
+                        <option value="Drug Offense">Drug Offense</option>
+                        <option value="Drug Offense + 924(c)">Drug Offense + 924(c)</option>
+                        <option value="Escape">Escape</option>
+                        <option value="Firearms">Firearms</option>
+                        <option value="Firearms + 924(c)">Firearms + 924(c)</option>
                         <option value="Fraud">Fraud</option>
-                        <option value="Money Laundering">Money Laundering</option>
+                        <option value="Fraud + 1028A">Fraud + 1028A</option>
+                        <option value="Immigration- Document Fraud">Immigration- Document Fraud</option>
                         <option value="Immigration- Illegal Re-Entry">Immigration- Illegal Re-Entry</option>
-                        <option value="Terrorism">Terrorism</option>
+                        <option value="Immigration- Alien Smuggling">Immigration- Alien Smuggling</option>
+                        <option value="Money Laundering">Money Laundering</option>
+                        <option value="Robbery">Robbery</option>
                         <option value="Robbery + 924(c)">Robbery + 924(c)</option>
                         <option value="Sex Trafficking">Sex Trafficking</option>
-                        <option value="Child Pornography">Child Pornography</option>
-                        <option value="Criminal Threat">Criminal Threat</option>
-                        <option value="Counterfeiting">Counterfeiting</option>
-                        <option value="Assault">Assault</option>
-                        <option value="Immigration- Document Fraud">Immigration- Document Fraud</option>
-                        <option value="Robbery">Robbery</option>
-                        <option value="Other">Other</option>
-                        <option value="924(c)">924(c)</option>
-                        <option value="Firearms">Firearms</option>
-                        <option value="Immigration- Alien Smuggling">Immigration- Alien Smuggling</option>
                         <option value="Sexual Abuse">Sexual Abuse</option>
-                        <option value="Firearms + 924(c)">Firearms + 924(c)</option>
-                        <option value="Escape">Escape</option>
                         <option value="SORNA">SORNA</option>
-                        <option value="Drug Offense">Drug Offense</option>
-                        <option value="Fraud + 1028A">Fraud + 1028A</option>
-                        <option value="Drug Offense + 924(c)">Drug Offense + 924(c)</option>
+                        <option value="Terrorism">Terrorism</option>
+                        <option value="Other">Other</option>
                     </select>
                 </label>
                 <label> Filter: Plea Type
@@ -116,7 +117,7 @@
                         <option value="Yes">Yes</option>
                     </select>
                 </label>
-                <label> Filter: Pre-trail Release
+                <label> Filter: Pretrial Release
                     <select name="ptr">
                         <option value="SPACE"></option>
                         <option value="release"> All released </option>
@@ -156,7 +157,7 @@
                 <label> Filter: Motions Filed
                     <select name="mofi">
                         <option value="SPACE"></option>
-                        <option value="No">Neither</option>
+                        <option value="No">None</option>
                         <option value="Yes. Both">Both</option>
                         <option value="Yes. Suppression">Suppression only</option>
                         <option value="Yes. Dismissal">Dismissal only</option>
@@ -173,14 +174,14 @@
                         <option value="Yes. Other">Other</option>
                     </select>
                 </label>
-                <label> Filter: PSRO Objections Filed
+                <label> Filter: PSR Objections Filed
                     <select name="psrof">
                         <option value="SPACE"></option>
                         <option value="NO">No</option>
                         <option value="YES">Yes</option>
                     </select>
                 </label>
-                <label> Filter: PSRO Objections Won
+                <label> Filter: PSR Objections Won
                     <select name="psrow">
                         <option value="SPACE"></option>
                         <option value="NO">No</option>
@@ -250,14 +251,14 @@
                         <option value="YES">Yes</option>
                     </select>
                 </label>
-                <label> Filter: 924c
+                <label> Filter: 924e
                     <select name="ntfc">
                         <option value="SPACE"></option>
                         <option value="NO">No</option>
                         <option value="YES">Yes</option>
                     </select>
                 </label>
-                <label> Filter: 4b1.1
+                <label> Filter: 4B1.1
                     <select name="fboo">
                         <option value="SPACE"></option>
                         <option value="NO">No</option>
@@ -382,45 +383,45 @@
                 <label> Segment
                     <select name="seg">
                         <option value="SPACE">None</option>
-                        <option value="closingdate__year">Year</option>
-                        <option value="location">Office Location</option>
-                        <option value="lastname">Last Name</option>
-                        <option value="judge">Judge</option>
-                        <option value="psrwriter">PSR Writer</option>
-                        <option value="prosecuter">Prosecutor</option>
-                        <option value="attorney">Attorney</option>
-                        <option value="closingauthor">Closing Author</option>
-                        <option value="statue">Statute</option>
-                        <option value="pleatype">Plea Type</option>
-                        <option value="unfiled924c">Unfiled 924c?</option>
-                        <option value="courtrejectedinitialbindingplea">Court Rejected Initial Binding Plea</option>
-                        <option value="pretrialrelease">Pre-trial Release</option>
-                        <option value="appealwaiver">Appeal Waiver</option>
-                        <option value="restitution">Restitution</option>
-                        <option value="plantoappeal">Plan to Appeal</option>
-                        <option value="motionsfiled">Motions Filed</option>
-                        <option value="motionswon">Motions Won</option>
-                        <option value="psrobjectionsfiled">PSR Objections Filed</option>
-                        <option value="psrobjectionswon">PSR Objections Won</option>
-                        <option value="sentencingmemofiled">Sentencing Memo Filed</option>
-                        <option value="cooperation">Cooperation</option>
-                        <option value="chargebargainaffectingsentencing">Charge Bargain Affecting Sentencing</option>
-                        <option value="variance">Variance Applied</option>
-                        <option value="criminalhistorycategory">Criminal History Category</option>
-                        <option value="cctostate">CC To State</option>
-                        <option value="cctofederal">CC To Federal</option>
-                        <option value="mandatoryminimumimposed">Mandatory Minimum Imposed?</option>
-                        <option value="adjustedoffenselevel">Adjusted Offense Level</option>
+                        <option value="fourbonepointone">4b1.1</option>
                         <option value="eightfiveone">851</option>
                         <option value="ninetwofoure">924c</option>
-                        <option value="fourbonepointone">4b1.1</option>
-                        <option value="expertemployed">Expert Employed?</option>
-                        <option value="investigatorinterviewedwitness">Investigator Interviewed Witness?</option>
-                        <option value="courtfollowedrecommendationofnonbindingpleaagreement">Court Followed Recommendation of Nonbinding Plea Agreement?</option>
-                        <option value="clientvisits">Client Visits</option>
-                        <option value="special">Special</option>
+                        <option value="adjustedoffenselevel">Adjusted Offense Level</option>
+                        <option value="appealwaiver">Appeal Waiver</option>
+                        <option value="attorney">Attorney</option>
                         <option value="caselength">Case Length (in months)</option>
+                        <option value="chargebargainaffectingsentencing">Charge Bargain Affecting Sentencing</option>
+                        <option value="cctostate">CC To State</option>
+                        <option value="cctofederal">CC To Federal</option>
+                        <option value="clientvisits">Client Visits</option>
+                        <option value="closingauthor">Closing Author</option>
+                        <option value="cooperation">Cooperation</option>
+                        <option value="courtfollowedrecommendationofnonbindingpleaagreement">Court Followed Recommendation of Nonbinding Plea Agreement?</option>
+                        <option value="courtrejectedinitialbindingplea">Court Rejected Initial Binding Plea</option>
+                        <option value="criminalhistorycategory">Criminal History Category</option>
+                        <option value="expertemployed">Expert Employed?</option>
                         <option value="formversion">Form Version</option>
+                        <option value="investigatorinterviewedwitness">Investigator Interviewed Witness?</option>
+                        <option value="judge">Judge</option>
+                        <option value="lastname">Last Name</option>
+                        <option value="mandatoryminimumimposed">Mandatory Minimum Imposed?</option>
+                        <option value="motionsfiled">Motions Filed</option>
+                        <option value="motionswon">Motions Won</option>
+                        <option value="location">Office Location</option>
+                        <option value="plantoappeal">Plan to Appeal</option>
+                        <option value="pleatype">Plea Type</option>
+                        <option value="pretrialrelease">Pretrial Release</option>
+                        <option value="prosecuter">Prosecutor</option>
+                        <option value="psrobjectionsfiled">PSR Objections Filed</option>
+                        <option value="psrobjectionswon">PSR Objections Won</option>
+                        <option value="psrwriter">PSR Writer</option>
+                        <option value="restitution">Restitution</option>
+                        <option value="sentencingmemofiled">Sentencing Memo Filed</option>
+                        <option value="special">Special</option>
+                        <option value="statue">Statute</option>
+                        <option value="unfiled924c">Unfiled 924c?</option>
+                        <option value="variance">Variance Applied</option>
+                        <option value="closingdate__year">Year</option>  
                     </select>
                 </label>
             </div>
@@ -428,7 +429,6 @@
             <div class = "row justify-content-md-center">
                 <input type="submit" />
             </div>
-
         </form>
     </div>
 </div>
@@ -470,7 +470,7 @@
                 <label>This table shows the aggregate values for your filter and your segmentation</label>
                 <table> <!-- Results table -->
                     <tr>
-                        <th> {{s}} </th>
+                        <th> {{stitling}} </th>
                         <th> {{title}} </th>
                         <th> Count </th>
                     </tr>
@@ -492,7 +492,7 @@
                 <label>This table shows the aggregate values for every row that your filter EXCLUDED by segment</label>
                 <table> <!-- Counter-results table -->
                     <tr>
-                        <th> {{s}} </th>
+                        <th> {{stitling}} </th>
                         <th> {{ntitle}} </th>
                         <th> Count </th>
                     </tr>
@@ -510,7 +510,7 @@
                 <label>This table shows the aggregate value for all rows, unfiltered, but with your segmentation applied</label>
                 <table> <!-- Unfiltered results table -->
                     <tr>
-                        <th> {{s}} </th>
+                        <th> {{stitling}} </th>
                         <th> {{otitle}} </th>
                         <th> Count </th>
                     </tr>
@@ -554,7 +554,7 @@
                         <th> Probation </th>
                         <th> Cooperation Reduction Percentage </th>
                         <th> Court Rejected Initial Binding Plea </th>
-                        <th> Pre-trial Release </th>
+                        <th> Pretrial Release </th>
                         <th> Appeal Waiver </th>
                         <th> Restitution </th>
                         <th> Plan to Appeal </th>
