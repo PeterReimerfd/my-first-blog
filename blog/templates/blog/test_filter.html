@@ -528,63 +528,65 @@
 
 
     <div class = "row mt-3">
-        <div class='good-scroll'>
+        <!-- <div class='good-scroll'> -->
+        <div class="wrap">
             <div {% if gregor is None %}class="hidden" {% endif %}>
                 <table>
-                    <tr>
-                        <th> ID Number </th>
-                        <th> File Name </th>
-                        <th> Office Location </th>
-                        <th> Last Name </th>
-                        <th> First and Middle Names </th>
-                        <th> Case Number </th>
-                        <th> Judge </th>
-                        <th> PSR Writer </th>
-                        <th> Prosecutor </th>
-                        <th> Attorney </th>
-                        <th> Closing Author </th>
-                        <th> Statute </th>
-                        <th> Plea Type </th>
-                        <th> Unfiled 924c? </th>
-                        <th> Lowest Guidelines-suggested Sentence (in months) </th>
-                        <th> Highest Guidelines-suggested Sentence (in months) </th>
-                        <th> Mandatory Minimum (in months) </th>
-                        <th> Sentence Imposed </th>
-                        <th> Supervised Release </th>
-                        <th> Probation </th>
-                        <th> Cooperation Reduction Percentage </th>
-                        <th> Court Rejected Initial Binding Plea </th>
-                        <th> Pretrial Release </th>
-                        <th> Appeal Waiver </th>
-                        <th> Restitution </th>
-                        <th> Plan to Appeal </th>
-                        <th> Motions Filed </th>
-                        <th> Motions Won </th>
-                        <th> PSR Objections Filed </th>
-                        <th> PSR Objections Won </th>
-                        <th> Sentencing Memo Filed </th>
-                        <th> Cooperation </th>
-                        <th> Charge Bargain Affecting Sentencing </th>
-                        <th> Variance Applied </th>
-                        <th> Criminal History Category </th>
-                        <th> CC To State </th>
-                        <th> CC To Federal </th>
-                        <th> Mandatory Minimum Imposed? </th>
-                        <th> Adjusted Offense Level </th>
-                        <th> 851 </th>
-                        <th> 924c </th>
-                        <th> 4b1.1 </th>
-                        <th> Expert Employed? </th>
-                        <th> Investigator Interviewed Witness? </th>
-                        <th> Court Followed Recommendation of Nonbinding Plea Agreement? </th>
-                        <th> Client Visits </th>
-                        <th> Closing Date </th>
-                        <th> Special </th>
-                        <th> Case Length (in months) </th>
-                        <th> Form Version </th>
-                        <th> MF </th>
-                        
-                    </tr>
+                    <thead> 
+                        <tr>
+                            <th> ID Number </th>
+                            <th> File Name </th>
+                            <th> Office Location </th>
+                            <th> Last Name </th>
+                            <th> First and Middle Names </th>
+                            <th> Case Number </th>
+                            <th> Judge </th>
+                            <th> PSR Writer </th>
+                            <th> Prosecutor </th>
+                            <th> Attorney </th>
+                            <th> Closing Author </th>
+                            <th> Statute </th>
+                            <th> Plea Type </th>
+                            <th> Unfiled 924c? </th>
+                            <th> Lowest Guidelines-suggested Sentence (in months) </th>
+                            <th> Highest Guidelines-suggested Sentence (in months) </th>
+                            <th> Mandatory Minimum (in months) </th>
+                            <th> Sentence Imposed </th>
+                            <th> Supervised Release </th>
+                            <th> Probation </th>
+                            <th> Cooperation Reduction Percentage </th>
+                            <th> Court Rejected Initial Binding Plea </th>
+                            <th> Pretrial Release </th>
+                            <th> Appeal Waiver </th>
+                            <th> Restitution </th>
+                            <th> Plan to Appeal </th>
+                            <th> Motions Filed </th>
+                            <th> Motions Won </th>
+                            <th> PSR Objections Filed </th>
+                            <th> PSR Objections Won </th>
+                            <th> Sentencing Memo Filed </th>
+                            <th> Cooperation </th>
+                            <th> Charge Bargain Affecting Sentencing </th>
+                            <th> Variance Applied </th>
+                            <th> Criminal History Category </th>
+                            <th> CC To State </th>
+                            <th> CC To Federal </th>
+                            <th> Mandatory Minimum Imposed? </th>
+                            <th> Adjusted Offense Level </th>
+                            <th> 851 </th>
+                            <th> 924c </th>
+                            <th> 4b1.1 </th>
+                            <th> Expert Employed? </th>
+                            <th> Investigator Interviewed Witness? </th>
+                            <th> Court Followed Recommendation of Nonbinding Plea Agreement? </th>
+                            <th> Client Visits </th>
+                            <th> Closing Date </th>
+                            <th> Special </th>
+                            <th> Case Length (in months) </th>
+                            <th> Form Version </th>
+                            <th> MF </th>
+                        </tr>
+                    </thead>
                         {% for column in tuble %}
                     <tr>
                         <td>{{column.num}}</td>
