@@ -6,19 +6,10 @@
         <div class='row'>
             <div class = "col-md-2">
                 <input type="reset">
-                <label> Exclude selection
+                <label title="If you check this box, the results will show everything EXCEPT those results that satisfy ALL of your filters.  If you don't check this box, the results will show ONLY those results that satisfy your filters."> Exclude selection
                     <input type="checkbox" name="noto">
                 </label>
-                <label> Aggregator
-                    <select name="gregor">
-                        <option value="average">Average (mean)</option>
-                        <option value="total">Sum</option>
-                        <option value="maximum">Maximum</option>
-                        <option value="minimum">Minimum</option>
-                        <option value="standev">Standard Deviation</option>
-                    </select>
-                </label>
-                <label> Output
+                <label title="For 'count' make sure to select 'count' in the aggregator also!"> Output
                     <select name="outtie">
                         <option value="rangelow">Lowest Guidelines-suggested Sentence (in months)</option>
                         <option value="rangehigh">Highest Guidelines-suggested Sentence (in months)</option>
@@ -30,6 +21,17 @@
                         <option value="caselength">Case Length (in months)</option>
                         <option value="sentenceimprovement">Sentence Improvement (in months)</option>
                         <option value="sip">Sentence Improvement (percentage)</option>
+                        <option value="rangelow">Count</option>
+                    </select>
+                </label>
+                <label> Aggregator
+                    <select name="gregor">
+                        <option value="average">Average (mean)</option>
+                        <option value="total">Sum</option>
+                        <option value="maximum">Maximum</option>
+                        <option value="minimum">Minimum</option>
+                        <option value="standev">Standard Deviation</option>
+                        <option value="count">Count</option>
                     </select>
                 </label>
             </div>
@@ -125,12 +127,12 @@
                         <option value="Released (USPO agreed. USAO agreed)">Released (USPO agreed, USAO agreed)</option>
                         <option value="Released (USPO objected. USAO agreed)">Released (USPO objected, USAO agreed)</option>
                         <option value="Released (USPO agreed. USAO objected)">Released (USPO agreed, USAO objected)</option>
+                        <option value="Released (USPO objected. USAO objected)">Released (USPO objected, USAO objected)</option> 
                         <option value="Detained (USPO objected. USAO agreed)">Detained (USPO objected, USAO agreed)</option>
                         <option value="Detained (USPO agreed. USAO agreed)">Detained (USPO agreed, USAO agreed)</option>
                         <option value="Detained (USPO objected. USAO objected)">Detained (USPO objected, USAO objected)</option>
-                        <option value="Detained (Client Waved Detention)">Detained (Client Waved Detention)</option>
                         <option value="Detained (USPO agreed. USAO objected)">Detained (USPO agreed, USAO objected)</option>
-                        <option value="Released (USPO objected. USAO objected)">Released (USPO objected, USAO objected)</option>            
+                        <option value="Detained (Client Waved Detention)">Detained (Client Waved Detention)</option>
                     </select>
                 </label>
                 <label> Filter: Appeal Waiver
@@ -378,9 +380,65 @@
                 <label> To
                     <input type="date" name="enddt" nullable=True>
                 </label>
+                <div><label><b>Intake Form Filters</b></label></div>
+                <label> Filter: Race
+                    <select name="racey">
+                        <option value="SPACE"></option>
+                        <option value="American Indian or Native">American Indian or Native</option>
+                        <option value="Asian">Asian</option>
+                        <option value="Black or African American">Black or African American</option>
+                        <option value="Hispanic">Hispanic</option>
+                        <option value="Other or Multiple">Other or Multiple</option>
+                        <option value="White">White</option>
+                    </select>
+                </label>
+                <label> Filter: Sex
+                    <select name="genny">
+                        <option value="SPACE"></option>
+                        <option value="Female">Female</option>
+                        <option value="Male">Male</option>
+                    </select>
+                </label>
+                <label> Filter: Immigration Status
+                    <select name="immy">
+                        <option value="SPACE"></option>
+                        <option value="Citizen">Citizen</option>
+                        <option value="Undocumented">Undocumented</option>
+                        <option value="Lawful Permanent Resident">Permanent Resident</option>
+                        <option value="Prior Deportation">Prior Deportation</option>
+                    </select>
+                </label>
+                <label> Filter: Interpreter
+                    <select name="inty">
+                        <option value="SPACE"></option>
+                        <option value="YES">Yes</option>
+                        <option value="NO">No</option>
+                    </select>
+                </label>
+                <label> Filter: Literate
+                    <select name="litty">
+                        <option value="SPACE"></option>
+                        <option value="YES">Yes</option>
+                        <option value="NO">No</option>
+                    </select>
+                </label>
+                <label> Filter: Section 8
+                    <select name="sec8y">
+                        <option value="SPACE"></option>
+                        <option value="YES">Yes</option>
+                        <option value="NO">No</option>
+                    </select>
+                </label>
+                <label> Filter: Housing Assistance
+                    <select name="housy">
+                        <option value="SPACE"></option>
+                        <option value="YES">Yes</option>
+                        <option value="NO">No</option>
+                    </select>
+                </label>
             </div>
             <div class = "col-md-2">
-                <label> Segment
+                <label> Compare By
                     <select name="seg">
                         <option value="SPACE">None</option>
                         <option value="fourbonepointone">4b1.1</option>
@@ -401,9 +459,12 @@
                         <option value="criminalhistorycategory">Criminal History Category</option>
                         <option value="expertemployed">Expert Employed?</option>
                         <option value="formversion">Form Version</option>
+                        <option value="status">Immigration Status</option>
+                        <option value="interpreter">Interpreter</option>
                         <option value="investigatorinterviewedwitness">Investigator Interviewed Witness?</option>
                         <option value="judge">Judge</option>
                         <option value="lastname">Last Name</option>
+                        <option value="literate">Literate</option>
                         <option value="mandatoryminimumimposed">Mandatory Minimum Imposed?</option>
                         <option value="motionsfiled">Motions Filed</option>
                         <option value="motionswon">Motions Won</option>
@@ -415,13 +476,16 @@
                         <option value="psrobjectionsfiled">PSR Objections Filed</option>
                         <option value="psrobjectionswon">PSR Objections Won</option>
                         <option value="psrwriter">PSR Writer</option>
+                        <option value="race">Race</option>
                         <option value="restitution">Restitution</option>
+                        <option value="sec8">Section 8</option>
                         <option value="sentencingmemofiled">Sentencing Memo Filed</option>
+                        <option value="gender">Sex</option>
                         <option value="special">Special</option>
                         <option value="statue">Statute</option>
                         <option value="unfiled924c">Unfiled 924c?</option>
                         <option value="variance">Variance Applied</option>
-                        <option value="closingdate__year">Year</option>  
+                        <option value="closingdate__year">Year Closed</option>  
                     </select>
                 </label>
             </div>
@@ -440,23 +504,24 @@
         <div class="col">
             <div {% if gregor is None %} class="hidden" {% endif %}>
                 <label>This table shows the aggregate value for all items by whether your filter is applied or not.  No segments are applied.</label>
+                <label>In other words, this is a summary of the difference between cases which fit your filter, and ALL cases</label>
                 <table> <!-- Filter agg table -->
                     <tr>
                         <th> Aggregator </th>
-                        <th> {{title}} </th>
+                        <th {% if gregor == "count" %} class="hidden" {% endif %}> {{title}} </th>
                         <th> Count </th>
                     </tr>  
                     <tr>
                         {% for key, value in simpleave.items %}
                         <td>Filtered {{gregor}}</td>
-                        <td>{{value}}</td>
+                        <td {% if gregor == "count" %} class="hidden" {% endif %}>{{value}}</td>
                         {% endfor %}
                         <td>{{simpleavect}}</td>
                     </tr>
                     <tr>
                         {% for key, value in simpall.items %}
                         <td>Overall {{gregor}}</td>
-                        <td>{{value}}</td>
+                        <td {% if gregor == "count" %} class="hidden" {% endif %}>{{value}}</td>
                         {% endfor %}
                         <td>{{simpallct}}</td>
                     </tr>
@@ -468,16 +533,17 @@
         <div class="col">
             <div {% if s is None %}class="hidden" {% endif %}>
                 <label>This table shows the aggregate values for your filter and your segmentation</label>
+                <label>In other words, this compares the cases you filtered by your "compared by" selection</label>
                 <table> <!-- Results table -->
                     <tr>
                         <th> {{stitling}} </th>
-                        <th> {{title}} </th>
+                        <th {% if gregor == "count" %} class="hidden" {% endif %}> {{title}} </th>
                         <th> Count </th>
                     </tr>
                         {% for column in segtub %}
                     <tr>
                         <td>{{ column|get_prop:s }}</td>
-                        <td>{{column.tAgg}}</td>
+                        <td {% if gregor == "count" %} class="hidden" {% endif %}>{{column.tAgg}}</td>
                         <td>{{column.tarct}}</td>
                     </tr>
                         {% endfor %}
@@ -490,16 +556,17 @@
         <div class = "row mt-4">
             <div class = "col">
                 <label>This table shows the aggregate values for every row that your filter EXCLUDED by segment</label>
+                <label>In other words, this is the opposite of the top right table.  This compares everything you didn't filter by your "compare by" selection</label>
                 <table> <!-- Counter-results table -->
                     <tr>
                         <th> {{stitling}} </th>
-                        <th> {{ntitle}} </th>
+                        <th {% if gregor == "count" %} class="hidden" {% endif %}> {{ntitle}} </th>
                         <th> Count </th>
                     </tr>
                         {% for column in segnub %}
                     <tr>
                         <td>{{ column|get_prop:s }}</td>
-                        <td>{{column.nAgg}}</td>
+                        <td {% if gregor == "count" %} class="hidden" {% endif %}>{{column.nAgg}}</td>
                         <td>{{column.tarct}}</td>
                         {% endfor %}
                     </tr>
@@ -508,16 +575,17 @@
 
             <div class = "col">
                 <label>This table shows the aggregate value for all rows, unfiltered, but with your segmentation applied</label>
+                <label>In other words, this compares the whole, unfiltered dataset by your "compare by" selection</label>
                 <table> <!-- Unfiltered results table -->
                     <tr>
                         <th> {{stitling}} </th>
-                        <th> {{otitle}} </th>
+                        <th {% if gregor == "count" %} class="hidden" {% endif %}> {{otitle}} </th>
                         <th> Count </th>
                     </tr>
                         {% for column in overall %}
                     <tr>
                         <td>{{ column|get_prop:s }}</td>
-                        <td>{{column.oAgg}}</td>
+                        <td {% if gregor == "count" %} class="hidden" {% endif %}>{{column.oAgg}}</td>
                         <td>{{column.tarct}}</td>
                         {% endfor %}
                     </tr>
@@ -584,7 +652,29 @@
                             <th> Special </th>
                             <th> Case Length (in months) </th>
                             <th> Form Version </th>
-                            <th> MF </th>
+                            <th> Intake Filename </th>
+                            <th> Intake Attorney </th>
+                            <th> Intake Date </th>
+                            <th> KSX Number </th>
+                            <th> Intake Interviewer </th>
+                            <th> Interpreter Used </th>
+                            <th> Date of Birth </th>
+                            <th> Birthplace </th>
+                            <th> ZIP code </th>
+                            <th> Gender </th>
+                            <th> Race </th>
+                            <th> Race Notes </th>
+                            <th> Immigration Status </th>
+                            <th> Religion </th>
+                            <th> Section 8 </th>
+                            <th> Housing Assistance </th>
+                            <th> Education </th>
+                            <th> Currently In School </th>
+                            <th> Mother's Education </th>
+                            <th> Literate </th>
+                            <th> Current Student Loans </th>
+                            <th> Spouse </th>
+                            <th> Children </th>
                         </tr>
                     </thead>
                         {% for column in tuble %}
@@ -639,7 +729,29 @@
                         <td>{{column.special}}</td>
                         <td>{{column.caselength}}</td>
                         <td>{{column.formversion}}</td>
-                        <td>{{column.mf}}</td>            
+                        <td>{{column.intake_filename}}</td>   
+                        <td>{{column.intake_attorney}}</td>    
+                        <td>{{column.intake_date}}</td>    
+                        <td>{{column.ksx_num}}</td>    
+                        <td>{{column.intake_interviewer}}</td>    
+                        <td>{{column.interpreter}}</td>    
+                        <td>{{column.dob}}</td>    
+                        <td>{{column.birthplace}}</td>    
+                        <td>{{column.zip}}</td>    
+                        <td>{{column.gender}}</td>    
+                        <td>{{column.race}}</td>    
+                        <td>{{column.race_notes}}</td>             
+                        <td>{{column.status}}</td>    
+                        <td>{{column.religion}}</td>    
+                        <td>{{column.sec8}}</td>    
+                        <td>{{column.housingassistance}}</td>    
+                        <td>{{column.education}}</td>    
+                        <td>{{column.cur_in_school}}</td>    
+                        <td>{{column.mother_education}}</td>    
+                        <td>{{column.literate}}</td>    
+                        <td>{{column.cur_student_loans}}</td>   
+                        <td>{{column.spouse}}</td> 
+                        <td>{{column.children}}</td> 
                     </tr>
                     {% endfor %}
                 </table>

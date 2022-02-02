@@ -147,6 +147,13 @@ def test_filter(request):
     coureject=request.GET.get("coureject")
     aolevel=request.GET.get("aolevel")
     gle35=request.GET.get("gle35")
+    racey=request.GET.get("racey")
+    genny=request.GET.get("genny")
+    immy=request.GET.get("immy")
+    inty=request.GET.get("inty")
+    litty=request.GET.get("litty")
+    sec8y=request.GET.get("sec8y")
+    housy=request.GET.get("housy")
     altcoin=0
     title=o
     sargh="x"
@@ -290,6 +297,21 @@ def test_filter(request):
         tuble = tuble.filter(criminalhistorycategory=chcat)
     if coureject != "SPACE":
         tuble = tuble.filter(courtrejectedinitialbindingplea=coureject)
+    if racey != "SPACE":
+        tuble = tuble.filter(race=racey)
+    if genny != "SPACE":
+        tuble = tuble.filter(gender=genny)
+    if immy != "SPACE":
+        tuble = tuble.filter(status=immy)
+    if inty != "SPACE":
+        tuble = tuble.filter(interpreter=inty)
+    if litty != "SPACE":
+        tuble = tuble.filter(literate=litty)
+    if sec8y != "SPACE":
+        tuble = tuble.filter(sec8=sec8y)
+    if housy != "SPACE":
+        tuble = tuble.filter(housingassistance=housy)
+
     #Below, filter management for TYPED filters
     if psrw is not None:
         tuble = tuble.filter(psrwriter__startswith=psrw)
@@ -380,6 +402,16 @@ def test_filter(request):
     tublet = tuble.filter(rangelow__gt=0)
     overallet = overall.filter(rangelow__gt=0)
     nublet = nuble.filter(rangelow__gt=0)
+    if gregor == "count":
+        if sargh == "sip":
+            simpleave = tublet.aggregate(tAgg=Avg(si/F('rangelow')+0.0))
+            simpall = overallet.aggregate(tAgg=Avg(si/F('rangelow')+0.0))
+        elif sargh == 'sentenceimprovement':
+            simpleave = tublet.aggregate(tAgg=(Avg(o)-Avg(altcoin)))
+            simpall = overallet.aggregate(tAgg=(Avg(o)-Avg(altcoin)))
+        else:
+            simpleave = tuble.aggregate(tAgg=(Avg(o)-Avg(altcoin)))
+            simpall = overall.aggregate(tAgg=(Avg(o)-Avg(altcoin)))
     if gregor == "average":
         if sargh == "sip":
             simpleave = tublet.aggregate(tAgg=Avg(si/F('rangelow')+0.0))
@@ -441,6 +473,19 @@ def test_filter(request):
         #BELOW SIP STILL NEEDS IMPLEMENTATION, also TUBLET and OVERALLET for SENTENCEIMPROVEMENT
     if s != "SPACE":
         if s != None:
+            if gregor == "count":
+                if sargh == "sip":
+                    segtub = tublet.values(s).annotate(tAgg=Avg(si/F('rangelow')+0.0)).annotate(tarct=Count(o))
+                    segnub = nublet.values(s).annotate(nAgg=Avg(si/F('rangelow')+0.0)).annotate(tarct=Count(o))
+                    overall = overallet.values(s).annotate(oAgg=Avg(si/F('rangelow')+0.0)).annotate(tarct=Count(o))
+                elif sargh == "sentenceimprovement":
+                    segtub = tublet.values(s).annotate(tAgg=(Avg(o)-Avg(altcoin))).annotate(tarct=Count(o))
+                    segnub = nublet.values(s).annotate(nAgg=(Avg(o)-Avg(altcoin))).annotate(tarct=Count(o))
+                    overall = overallet.values(s).annotate(oAgg=(Avg(o)-Avg(altcoin))).annotate(tarct=Count(o))
+                else:
+                    segtub = tuble.values(s).annotate(tAgg=(Avg(o)-Avg(altcoin))).annotate(tarct=Count(o))
+                    segnub = nuble.values(s).annotate(nAgg=(Avg(o)-Avg(altcoin))).annotate(tarct=Count(o))
+                    overall = overall.values(s).annotate(oAgg=(Avg(o)-Avg(altcoin))).annotate(tarct=Count(o))
             if gregor == "average":
                 if sargh == "sip":
                     segtub = tublet.values(s).annotate(tAgg=Avg(si/F('rangelow')+0.0)).annotate(tarct=Count(o))
@@ -584,7 +629,30 @@ def profile_upload(request):
             special=column[47],
             caselength=column[48],
             formversion=column[49],
-            mf=column[50]
+            mf=column[50],
+            intake_filename=column[51],
+            intake_attorney=column[52],
+            intake_date=column[53] if column[53]!="" else None,        
+            ksx_num=column[54],
+            intake_interviewer=column[55],
+            interpreter=column[56],
+            dob=column[57] if column[57]!="" else None,
+            birthplace=column[58],
+            zip=column[59] if column[59]!="" else None,
+            gender=column[60],
+            race=column[61],
+            race_notes=column[62],
+            status=column[63],
+            religion=column[64],
+            sec8=column[65],
+            housingassistance=column[66],
+            education=column[67],
+            cur_in_school=column[68],
+            mother_education=column[69],
+            literate=column[70],
+            cur_student_loans=column[71],
+            spouse=column[72],
+            children=column[73]
         )
     context = {}
     return render(request, template, context)
