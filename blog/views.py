@@ -329,53 +329,53 @@ def test_filter(request):
             tuble = tuble.filter(rangelow = lowgui)
     if highgui is not None:
         if gle2 == "less":
-            tuble = tuble.filter(rangelow__lte=highgui)
+            tuble = tuble.filter(rangehigh__lte=highgui)
         if gle2 == "more":
-            tuble = tuble.filter(rangelow__gte=highgui)
+            tuble = tuble.filter(rangehigh__gte=highgui)
         if gle2 == "exact":
-            tuble = tuble.filter(rangelow = highgui)
+            tuble = tuble.filter(rangehigh = highgui)
     if marmot is not None:
         if gle3 == "less":
-            tuble = tuble.filter(rangelow__lte=marmot)
+            tuble = tuble.filter(mandatoryminimummonths__lte=marmot)
         if gle3 == "more":
-            tuble = tuble.filter(rangelow__gte=marmot)
+            tuble = tuble.filter(mandatoryminimummonths__gte=marmot)
         if gle3 == "exact":
-            tuble = tuble.filter(rangelow = marmot)
+            tuble = tuble.filter(mandatoryminimummonths = marmot)
     if aolevel is not None:
         if gle35 == "less":
-            tuble = tuble.filter(rangelow__lte=aolevel)
+            tuble = tuble.filter(adjustedoffenselevel__lte=aolevel)
         if gle35 == "more":
-            tuble = tuble.filter(rangelow__gte=aolevel)
+            tuble = tuble.filter(adjustedoffenselevel__gte=aolevel)
         if gle35 == "exact":
-            tuble = tuble.filter(rangelow = aolevel)
+            tuble = tuble.filter(adjustedoffenselevel = aolevel)
     if senim is not None:
         if gle4 == "less":
-            tuble = tuble.filter(rangelow__lte=senim)
+            tuble = tuble.filter(sentenceimposed__lte=senim)
         if gle4 == "more":
-            tuble = tuble.filter(rangelow__gte=senim)
+            tuble = tuble.filter(sentenceimposed__gte=senim)
         if gle4 == "exact":
-            tuble = tuble.filter(rangelow = senim)
+            tuble = tuble.filter(sentenceimposed = senim)
     if suprel is not None:
         if gle5 == "less":
-            tuble = tuble.filter(rangelow__lte=suprel)
+            tuble = tuble.filter(supervisedrelease__lte=suprel)
         if gle5 == "more":
-            tuble = tuble.filter(rangelow__gte=suprel)
+            tuble = tuble.filter(supervisedrelease__gte=suprel)
         if gle5 == "exact":
-            tuble = tuble.filter(rangelow = suprel)
+            tuble = tuble.filter(supervisedrelease = suprel)
     if prob is not None:
         if gle6 == "less":
-            tuble = tuble.filter(rangelow__lte=prob)
+            tuble = tuble.filter(probation__lte=prob)
         if gle6 == "more":
-            tuble = tuble.filter(rangelow__gte=prob)
+            tuble = tuble.filter(probation__gte=prob)
         if gle6 == "exact":
-            tuble = tuble.filter(rangelow = prob)
+            tuble = tuble.filter(probation = prob)
     if coreper is not None:
         if gle7 == "less":
-            tuble = tuble.filter(rangelow__lte=coreper)
+            tuble = tuble.filter(cooperationreductionpercentage__lte=coreper)
         if gle7 == "more":
-            tuble = tuble.filter(rangelow__gte=coreper)
+            tuble = tuble.filter(cooperationreductionpercentage__gte=coreper)
         if gle7 == "exact":
-            tuble = tuble.filter(rangelow = coreper)
+            tuble = tuble.filter(cooperationreductionpercentage = coreper)
     if startdt is not None:
         if startdt != "":
             tuble=tuble.filter(closingdate__gte=startdt)
